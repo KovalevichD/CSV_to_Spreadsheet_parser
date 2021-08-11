@@ -1,0 +1,21 @@
+{
+  "name": "parsecsv",
+  "version": "1.0.0",
+  "description": "cloud function for parsing CSV and transfer the data to Google Spread Sheets",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx functions-framework --target=parseCsv [--signature-type=event]",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dmitry Kovalevich",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/storage": "^5.11.0",
+    "googleapis": "^83.0.0",
+    "papaparse": "^5.3.1",
+    "ssh2": "^1.2.0"
+  },
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.9.0"
+  }
+}
