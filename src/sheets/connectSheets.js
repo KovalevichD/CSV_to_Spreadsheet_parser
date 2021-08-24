@@ -1,12 +1,12 @@
 const { google } = require("googleapis");
-const config = require("../../config");
+const { configGSH } = require("../../config");
 
 const connectSheets = async () => {
   const client = new google.auth.JWT(
-    config.configGSH.client_email,
+    configGSH.client_email,
     null,
-    config.configGSH.private_key,
-    config.configGSH.scopes
+    configGSH.private_key,
+    configGSH.scopes
   );
 
   await client.authorize();

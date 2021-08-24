@@ -1,5 +1,5 @@
 const { configFTP } = require("../../config");
-const getAllCSVDates = require("../utils/getAllCSVDates");
+const getAllCSVDates = require("../utils/csv/getAllCSVDates");
 
 const readDirFTP = (sftp) => {
   return new Promise((resolve, reject) => {

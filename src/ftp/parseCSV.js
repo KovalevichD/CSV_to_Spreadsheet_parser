@@ -1,5 +1,6 @@
-const getLatestCSVDate = require("../utils/getLatestCSVDate");
-const validateData = require("../utils/validateData");
+const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
+const validateDataGoogle = require("../utils/validate/validateDataGoogle");
+const validateDataFacebook = require("../utils/validate/validateDataFacebook");
 const connect = require("./connectFTP");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
@@ -10,7 +11,10 @@ const parseSCV = (sftp, dates) => {
     const pathCSV = configFTP.root_directory + configFTP.csv_name + actualCSV;
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
     const parseStream = parseCsv.parse(parseCsv.NODE_STREAM_INPUT, {});
-    const data = [];
+    const data = {};
+
+    data.googleData = [];
+    data.facebookData = [];
 
     readDataStream.pipe(parseStream);
 
@@ -21,9 +25,11 @@ const parseSCV = (sftp, dates) => {
     });
 
     parseStream.on("data", (chunk) => {
-      const validatedChunk = validateData(chunk);
+      const validatedChunkGoogle = validateDataGoogle(chunk);
+      const validatedChunkFacebook = validateDataFacebook(chunk);
 
-      data.push(validatedChunk);
+      data.googleData.push(validatedChunkGoogle);
+      data.facebookData.push(validatedChunkFacebook);
     });
 
     parseStream.on("finish", () => {

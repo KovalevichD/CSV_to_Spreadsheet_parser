@@ -1,11 +1,11 @@
-const config = require("../../config");
+const { configGSH } = require("../../config");
 
-const writeDataToSheets = async (data, sheets) => {
+const writeDataToSheets = async (data, sheets, sheetId) => {
   const values = data;
   const lastCellTitle = data[0].length;
-  
+
   const styleOptions = {
-    spreadsheetId: config.configGSH.spreadsheetId,
+    spreadsheetId: sheetId,
     resource: {
       requests: [
         {
@@ -54,15 +54,15 @@ const writeDataToSheets = async (data, sheets) => {
   };
 
   const appendOptions = {
-    spreadsheetId: config.configGSH.spreadsheetId,
-    range: config.configGSH.sheetName,
+    spreadsheetId: sheetId,
+    range: configGSH.sheetName,
     valueInputOption: "RAW",
     resource: { values },
   };
 
   const clearOptions = {
-    spreadsheetId: config.configGSH.spreadsheetId,
-    range: config.configGSH.sheetName,
+    spreadsheetId: sheetId,
+    range: configGSH.sheetName,
   };
 
   console.log("Filling Sheet...");
