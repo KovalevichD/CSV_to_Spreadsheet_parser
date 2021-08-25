@@ -3,7 +3,7 @@ const checkFirstRowCSV = require("../csv/checkFirstRowCSV");
 const validateUrl = require("./validateUrl");
 
 const validateFacebook = (data) => {
-  const columnsToSave = configValidateCSV.columnsToSave;
+  const columnsToSave = configValidateCSV.columnsToSaveFacebook;
   const columnsToBeginning = configValidateCSV.columnsAddToBeginningFacebook;
   const columnsToEnd = configValidateCSV.columnsAddToEndFacebook;
   const firstThreeColumnNames = Object.entries(columnsToSave).slice(0, 3);
@@ -29,22 +29,37 @@ const validateFacebook = (data) => {
 
       switch (titleColumn) {
         case "origin":
-          data[columnToSave] = "origin_airport";
+          data[columnToSave] = "origin.airport";
           break;
         case "hotel_id":
-          data[columnToSave] = "item_group_id";
+          data[columnToSave] = "item.group.id";
           break;
         case "destination":
-          data[columnToSave] = "destination_airport";
+          data[columnToSave] = "destination.airport";
           break;
         case "trip_length_of_stay":
-          data[columnToSave] = "length_of_stay";
+          data[columnToSave] = "length.of.stay";
+          break;
+        case "base_price":
+          data[columnToSave] = "base.price";
           break;
         case "package_price":
           data[columnToSave] = "price";
           break;
         case "thumbnail_image_url":
           data[columnToSave] = "image[0].url";
+          break;
+        case "neighborhood":
+          data[columnToSave] = "neighborhood[0]";
+          break;
+        case "address_addr1":
+          data[columnToSave] = "address.addr1";
+          break;
+        case "address_city":
+          data[columnToSave] = "address.city";
+          break;
+        case "address_region":
+          data[columnToSave] = "address.region";
           break;
         case "address_country":
           data[columnToSave] = "address.country";

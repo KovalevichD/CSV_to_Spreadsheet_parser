@@ -3,7 +3,7 @@ const checkFirstRowCSV = require("../csv/checkFirstRowCSV");
 const validateUrl = require("./validateUrl");
 
 const validateGoogle = (data) => {
-  const columnsToSave = configValidateCSV.columnsToSave;
+  const columnsToSave = configValidateCSV.columnsToSaveGoogle;
   const columnsToBeginning = configValidateCSV.columnsAddToBeginningGoogle;
   const columnsToEnd = configValidateCSV.columnsAddToEndGoogle;
   const firstThreeColumnNames = Object.entries(columnsToSave).slice(0, 3);
