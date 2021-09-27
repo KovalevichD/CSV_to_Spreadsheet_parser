@@ -23,25 +23,23 @@ const validateFacebook = (data) => {
   }
 
   for (const prop in columnsToSave) {
+    const columnToSave = columnsToSave[prop];
+
     if (isFirstRowCSV) {
-      const columnToSave = columnsToSave[prop];
       const titleColumn = data[columnToSave].replace(/^\s+|\s+$/g, "");
 
       switch (titleColumn) {
         case "origin":
-          data[columnToSave] = "origin.airport";
+          data[columnToSave] = "origin_airport";
           break;
         case "hotel_id":
-          data[columnToSave] = "item.group.id";
+          data[columnToSave] = "item_group_id";
           break;
         case "destination":
-          data[columnToSave] = "destination.airport";
+          data[columnToSave] = "destination_airport";
           break;
         case "trip_length_of_stay":
-          data[columnToSave] = "length.of.stay";
-          break;
-        case "base_price":
-          data[columnToSave] = "base.price";
+          data[columnToSave] = "length_of_stay";
           break;
         case "package_price":
           data[columnToSave] = "price";
@@ -64,11 +62,26 @@ const validateFacebook = (data) => {
         case "address_country":
           data[columnToSave] = "address.country";
           break;
+        case "NativeDescription":
+          data[columnToSave] = "native_description";
+          break;
       }
 
       validatedData.push(data[columnToSave]);
     } else {
-      const columnToSave = columnsToSave[prop];
+      let basePrice = data[columnsToSave["base_price"]];
+      let packagePrice = data[columnsToSave["package_price"]];
+      const validatedBasePrice = basePrice.split("$")[1] + " USD";
+      const validatedPackagePrice = packagePrice.split("$")[1] + " USD";
+
+      switch (prop) {
+        case "base_price":
+          data[columnToSave] = validatedBasePrice;
+          break;
+        case "package_price":
+          data[columnToSave] = validatedPackagePrice;
+          break;
+      }
 
       validatedData.push(data[columnToSave]);
     }
@@ -79,10 +92,12 @@ const validateFacebook = (data) => {
   } else {
     const exitUrl = data[columnsToSave["url"]];
     const isUrl = validateUrl(exitUrl);
-
+    const lengthOfStay = data[columnsToSave["trip_length_of_stay"]];
+    const description = lengthOfStay + " Nights with Air";
+    
     if (!isUrl) visibility = "rejected";
 
-    validatedData.push(visibility);
+    validatedData.push(description, visibility);
   }
 
   return validatedData;

@@ -1,6 +1,6 @@
 const { configGSH } = require("../../config");
 
-const writeDataToSheets = async (data, sheets, sheetId) => {
+const writeDataToSheets = async (data, sheets, sheetId, sheetFor) => {
   const values = data;
   const lastCellTitle = data[0].length;
 
@@ -56,7 +56,7 @@ const writeDataToSheets = async (data, sheets, sheetId) => {
   const appendOptions = {
     spreadsheetId: sheetId,
     range: configGSH.sheetName,
-    valueInputOption: "RAW",
+    valueInputOption: "USER_ENTERED",
     resource: { values },
   };
 
@@ -65,13 +65,13 @@ const writeDataToSheets = async (data, sheets, sheetId) => {
     range: configGSH.sheetName,
   };
 
-  console.log("Filling Sheet...");
+  console.log(`Filling sheet for ${sheetFor}...`);
   await sheets.spreadsheets.values.clear(clearOptions);
 
   await sheets.spreadsheets.batchUpdate(styleOptions);
 
   await sheets.spreadsheets.values.append(appendOptions);
-  console.log("Sheet filled");
+  console.log(`The sheet for ${sheetFor} is filled with ${data.length} lines`);
 };
 
 module.exports = writeDataToSheets;

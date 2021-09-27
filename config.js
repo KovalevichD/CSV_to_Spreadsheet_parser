@@ -1,34 +1,58 @@
 module.exports = {
   configFTP: {
-    host: "23.236.48.59",
+    host: "",
     port: 22,
     user_name: "name",
-    password: "password",
-    root_directory: "/your/dir/",
-    csv_name: "csv_name",
+    password: "pass",
+    root_directory: "dir",
+    csv_name: "name",
   },
   configGSH: {
     client_email: "email",
     private_key: "key",
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    scopes: ["scope"],
     spreadsheetIdGoogle: "id",
     spreadsheetIdFacebook: "id",
-    sheetName: "name",
+    sheetName: "name"
   },
   configValidateCSV: {
     columnsAddToBeginningGoogle: ["unique_id", "reporting_label"],
     columnsAddToEndGoogle: ["is_active", "is_default"],
-    columnsAddToBeginningFacebook: ["hotel.id"],
-    columnsAddToEndFacebook: ["visibility"],
+    columnsAddToBeginningFacebook: ["hotel_id"],
+    columnsAddToEndFacebook: ["description","visibility"],
     columnsToSaveGoogle: {
-      column_name_0: 0,
-      column_name_5: 5,
-      column_name_11: 11
+      "origin": 0,
+      "destination": 1,
+      "hotel_id": 2,
+      "name": 3,
+      "address_region": 7,
+      "address_country": 8,
+      "base_price": 14,
+      "package_price": 15,
+      "description": 16,
+      "trip_length_of_stay": 18,
+      "thumbnail_image_url": 20,
+      "url": 21
     },
     columnsToSaveFacebook: {
-      column_name_0: 0,
-      column_name_5: 5,
-      column_name_11: 11
+      "origin": 0,
+      "destination": 1,
+      "hotel_id": 2,
+      "name": 3,
+      "brand": 4,
+      "address_addr1": 5,
+      "address_city": 6,
+      "address_region": 7,
+      "address_country": 8,
+      "neighborhood": 10,
+      "latitude": 11,
+      "longitude": 12,
+      "base_price": 14,
+      "package_price": 15,
+      "trip_length_of_stay": 18,
+      "thumbnail_image_url": 20,
+      "url": 21,
+      "NativeDescription": 28
     }
   },
 };
