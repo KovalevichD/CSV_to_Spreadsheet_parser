@@ -12,7 +12,7 @@ const removeImages = async (arr, marketplace) => {
       let imgUrl = marketplace === "google" ? row[12] : row[16];
 
       const result = await validateImage(imgUrl).catch((err) =>
-        console.log(err)
+        console.log('Validate image ERR', err)
       );
 
       try {
@@ -21,7 +21,7 @@ const removeImages = async (arr, marketplace) => {
           console.log(result);
         }
       } catch (e) {
-        console.log(e);
+        console.log('Image dimensions ERR', e);
       }
     }
   })();
