@@ -15,6 +15,4 @@ const parseCsv = async (req, res) => {
   writeDataToSheets(data.googleAdsData, sheets, googleAdsSheetId, 'GoogleAds');
 };
 
-parseCsv()
-
 module.exports = parseCsv;
