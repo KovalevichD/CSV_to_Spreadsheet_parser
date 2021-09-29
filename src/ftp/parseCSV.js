@@ -49,7 +49,6 @@ const parseSCV = (sftp, dates) => {
         setImgUrlCloneFacebook
       );
 
-      if (isNormalRowGoogle) data.googleData.push(validatedChunkGoogle);
       if (isNormalRowFacebook) data.facebookData.push(validatedChunkFacebook);
     });
 
