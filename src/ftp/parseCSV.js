@@ -1,11 +1,8 @@
 const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
-const validateDataGoogle = require("../utils/validate/validateDataGoogle");
-const validateDataFacebook = require("../utils/validate/validateDataFacebook");
+const validateDataGoogleAds = require("../utils/validate/validateDataGoogleAds");
 const connect = require("./connectFTP");
-const { configFTP } = require("../../config");
+const { configFTP, configValidateCSV } = require("../../config");
 const parseCsv = require("papaparse");
-const checkRowFacebook = require("../utils/validate/checkRowFacebook");
-const checkRowGoogle = require("../utils/validate/checkRowGoogle");
 
 const parseSCV = (sftp, dates) => {
   return new Promise((resolve, reject) => {
@@ -14,16 +11,10 @@ const parseSCV = (sftp, dates) => {
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
     const parseStream = parseCsv.parse(parseCsv.NODE_STREAM_INPUT, {});
     const data = {};
-    const setUniqueIdGoogle = new Set();
-    const setImgUrlGoogle = new Set();
 
-    const setUniqueIdFacebook = new Set();
-    const setHotelIdFacebook = new Set();
-    const setImgUrlFacebook = new Set();
-    const setImgUrlCloneFacebook = new Set();
+    let counter = 0;
 
-    data.googleData = [];
-    data.facebookData = [];
+    data.googleAdsData = [];
 
     readDataStream.pipe(parseStream);
 
@@ -34,30 +25,29 @@ const parseSCV = (sftp, dates) => {
     });
 
     parseStream.on("data", async (chunk) => {
-      const validatedChunkGoogle = validateDataGoogle(chunk);
-      const validatedChunkFacebook = validateDataFacebook(chunk);
-      const isNormalRowGoogle = checkRowGoogle(
-        validatedChunkGoogle,
-        setUniqueIdGoogle,
-        setImgUrlGoogle
-      );
-      const isNormalRowFacebook = checkRowFacebook(
-        validatedChunkFacebook,
-        setUniqueIdFacebook,
-        setHotelIdFacebook,
-        setImgUrlFacebook,
-        setImgUrlCloneFacebook
-      );
+      const validatedChunkGoogleAds = validateDataGoogleAds(chunk, counter);
 
-      if (isNormalRowGoogle) data.googleData.push(validatedChunkGoogle);
-      if (isNormalRowFacebook) data.facebookData.push(validatedChunkFacebook);
+      if (configValidateCSV.leaveValuesWithSemicolon) {
+        if (validatedChunkGoogleAds[0].length > 0)
+          data.googleAdsData.push(validatedChunkGoogleAds);
+      } else {
+        if (
+          validatedChunkGoogleAds[0].indexOf(";") === -1 &&
+          validatedChunkGoogleAds[0].length > 0
+        )
+          data.googleAdsData.push(validatedChunkGoogleAds);
+      }
+
+      counter++;
     });
 
     parseStream.on("finish", () => {
       resolve(data);
+
       console.log(
-        `CSV parsing is finished! Added rows: Google - ${data.googleData.length}, Facebook - ${data.facebookData.length}`
+        `CSV parsing is finished! Added rows: Google Ads - ${data.googleAdsData.length}`
       );
+      console.log(`Initial amount of rows: ${counter}`);
     });
   });
 };
