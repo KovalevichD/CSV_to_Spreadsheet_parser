@@ -1,11 +1,10 @@
 const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
 const validateDataGoogleAds = require("../utils/validate/validateDataGoogleAds");
 const checkRow = require("../utils/validate/checkRowGoogleAds");
-const connect = require("./connectFTP");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 
-const parseSCV = (sftp, dates) => {
+const parseSCV = (connection, sftp, dates) => {
   return new Promise((resolve, reject) => {
     const actualCSV = getLatestCSVDate(dates);
     const pathCSV = configFTP.root_directory + configFTP.csv_name + actualCSV;
@@ -22,7 +21,7 @@ const parseSCV = (sftp, dates) => {
     console.log("CSV parsing...");
 
     readDataStream.on("end", () => {
-      connect.connection.end();
+      connection.end();
     });
 
     parseStream.on("data", async (chunk) => {
