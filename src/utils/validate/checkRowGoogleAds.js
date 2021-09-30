@@ -1,32 +1,19 @@
-// const removeBadRows = (row) => {
-//   let isNormalRow = false;
-//   // console.log('old', cell.length)
-//   // console.log('REPLACED!!!!!!!!!!!!!!!',cell.replace(/^\s+|\s+$/g, "").length)
-//   // if (cell.indexOf(';') >= 0) {
-//   //   console.log('BAD')
-//   //     console.log('old', cell.length)
-//   // console.log('REPLACED!!!!!!!!!!!!!!!',cell.replace(/^\s+|\s+$/g, "").length)
-//   // } 
-//   // row.forEach((el) => {
-// // console.log(row)
-//     if (row[0].indexOf(';') === -1 && row[0].length > 0) {
-//       isNormalRow = true
-//     } else {
-//       console.log(row[0])
-//     }
-//     // if (row[2].length > 0) console.log(row[0])
-//     // try {
-//     //   if (row[2].length === 0) console.log(row[0])
+const { configValidateCSV } = require("../../../config");
 
-//     // } catch(e) {
-//     //   console.log(row[2])
-//     //   console.log(row)
-//     // }
-    
-//   // });
-//   return isNormalRow;
+const checkRow = (row) => {
+  const idCell = row[0];
+  const titleCell = row[2];
+  const isEmptyCell = titleCell.length === 0;
+  const isSemicolonInCell = idCell.indexOf(";") >= 0;
+  let isNormalRow = true;
 
-//   // return cell.indexOf(';') >= 0
-// };
+  if (configValidateCSV.leaveValuesWithSemicolon) {
+    if (isEmptyCell) isNormalRow = false;
+  } else {
+    if (isSemicolonInCell || isEmptyCell) isNormalRow = false;
+  }
 
-// module.exports = removeBadRows;
+  return isNormalRow;
+};
+
+module.exports = checkRow;

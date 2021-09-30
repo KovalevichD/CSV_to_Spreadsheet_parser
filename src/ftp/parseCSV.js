@@ -1,7 +1,8 @@
 const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
 const validateDataGoogleAds = require("../utils/validate/validateDataGoogleAds");
+const checkRow = require("../utils/validate/checkRowGoogleAds");
 const connect = require("./connectFTP");
-const { configFTP, configValidateCSV } = require("../../config");
+const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 
 const parseSCV = (sftp, dates) => {
@@ -26,17 +27,9 @@ const parseSCV = (sftp, dates) => {
 
     parseStream.on("data", async (chunk) => {
       const validatedChunkGoogleAds = validateDataGoogleAds(chunk, counter);
+      const isNormalRow = checkRow(validatedChunkGoogleAds);
 
-      if (configValidateCSV.leaveValuesWithSemicolon) {
-        if (validatedChunkGoogleAds[0].length > 0)
-          data.googleAdsData.push(validatedChunkGoogleAds);
-      } else {
-        if (
-          validatedChunkGoogleAds[0].indexOf(";") === -1 &&
-          validatedChunkGoogleAds[0].length > 0
-        )
-          data.googleAdsData.push(validatedChunkGoogleAds);
-      }
+      if (isNormalRow) data.googleAdsData.push(validatedChunkGoogleAds);
 
       counter++;
     });
