@@ -1,6 +1,5 @@
 const removeBadRows = (arrayRow, setUniqueId, setImgUrl) => {
   const uniqueId = arrayRow[0];
-  // const imageUrl = arrayRow[12];
   const imageUrl = arrayRow[16];
   let isNormalRow = false;
 
