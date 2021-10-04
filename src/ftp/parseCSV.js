@@ -1,11 +1,11 @@
 const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
-const validateDataGoogle = require("../utils/validate/validateDataGoogle");
+// const validateDataGoogle = require("../utils/validate/validateDataGoogle");
 const validateDataFacebook = require("../utils/validate/validateDataFacebook");
 const connect = require("./connectFTP");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 const checkRowFacebook = require("../utils/validate/checkRowFacebook");
-const checkRowGoogle = require("../utils/validate/checkRowGoogle");
+// const checkRowGoogle = require("../utils/validate/checkRowGoogle");
 
 const parseSCV = (sftp, dates) => {
   return new Promise((resolve, reject) => {
@@ -14,8 +14,8 @@ const parseSCV = (sftp, dates) => {
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
     const parseStream = parseCsv.parse(parseCsv.NODE_STREAM_INPUT, {});
     const data = {};
-    const setUniqueIdGoogle = new Set();
-    const setImgUrlGoogle = new Set();
+    // const setUniqueIdGoogle = new Set();
+    // const setImgUrlGoogle = new Set();
 
     const setUniqueIdFacebook = new Set();
     const setHotelIdFacebook = new Set();
@@ -34,13 +34,13 @@ const parseSCV = (sftp, dates) => {
     });
 
     parseStream.on("data", async (chunk) => {
-      const validatedChunkGoogle = validateDataGoogle(chunk);
+      // const validatedChunkGoogle = validateDataGoogle(chunk);
       const validatedChunkFacebook = validateDataFacebook(chunk);
-      const isNormalRowGoogle = checkRowGoogle(
-        validatedChunkGoogle,
-        setUniqueIdGoogle,
-        setImgUrlGoogle
-      );
+      // const isNormalRowGoogle = checkRowGoogle(
+      //   validatedChunkGoogle,
+      //   setUniqueIdGoogle,
+      //   setImgUrlGoogle
+      // );
       const isNormalRowFacebook = checkRowFacebook(
         validatedChunkFacebook,
         setUniqueIdFacebook,
@@ -49,14 +49,14 @@ const parseSCV = (sftp, dates) => {
         setImgUrlCloneFacebook
       );
 
-      if (isNormalRowGoogle) data.googleData.push(validatedChunkGoogle);
+      // if (isNormalRowGoogle) data.googleData.push(validatedChunkGoogle);
       if (isNormalRowFacebook) data.facebookData.push(validatedChunkFacebook);
     });
 
     parseStream.on("finish", () => {
       resolve(data);
       console.log(
-        `CSV parsing is finished! Added rows: Google - ${data.googleData.length}, Facebook - ${data.facebookData.length}`
+        `CSV parsing is finished! Added rows: Facebook - ${data.facebookData.length}`
       );
     });
   });

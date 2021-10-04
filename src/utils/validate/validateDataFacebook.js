@@ -3,9 +3,9 @@ const checkFirstRowCSV = require("../csv/checkFirstRowCSV");
 const validateUrl = require("./validateUrl");
 
 const validateFacebook = (data) => {
-  const columnsToSave = configValidateCSV.columnsToSaveFacebook;
-  const columnsToBeginning = configValidateCSV.columnsAddToBeginningFacebook;
-  const columnsToEnd = configValidateCSV.columnsAddToEndFacebook;
+  const columnsToSave = configValidateCSV.columnsToSave;
+  const columnsToBeginning = configValidateCSV.columnsAddToBeginning;
+  const columnsToEnd = configValidateCSV.columnsAddToEnd;
   const firstThreeColumnNames = Object.entries(columnsToSave).slice(0, 3);
   const isFirstRowCSV = checkFirstRowCSV(data, firstThreeColumnNames);
   const validatedData = [];
