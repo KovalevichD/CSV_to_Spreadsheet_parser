@@ -6,9 +6,10 @@ const parseCsv = async (req, res) => {
   const connectSheets = require("./src/sheets/connectSheets");
   const writeDataToSheets = require("./src/sheets/writeData");
 
-  const connectionFTP = await connect.connectToFTP();
-  const csv = await readDirFTP(connectionFTP);
-  const data = await parseCSV(connectionFTP, csv);
+  const sftp = await connect.connectToFTP();
+  const connection = connect.connection;
+  const csv = await readDirFTP(sftp);
+  const data = await parseCSV(connection, sftp, csv);
   const sheets = await connectSheets();
   const facebookSheetId = configGSH.spreadsheetId;
   const fileSheetName = "Facebook_BB";

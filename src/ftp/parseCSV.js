@@ -1,10 +1,9 @@
 const validateData = require("../utils/validate/validateData");
-const connect = require("./connectFTP");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 const checkRow = require("../utils/validate/checkRow");
 
-const parseSCV = (sftp, fileName) => {
+const parseSCV = (connection, sftp, fileName) => {
   return new Promise((resolve, reject) => {
     const pathCSV = configFTP.root_directory + fileName;
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
@@ -19,7 +18,7 @@ const parseSCV = (sftp, fileName) => {
     console.log("CSV parsing...");
 
     readDataStream.on("end", () => {
-      connect.connection.end();
+      connection.end();
     });
     
     parseStream.on("data", async (chunk) => {
