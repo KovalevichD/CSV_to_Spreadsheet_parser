@@ -8,9 +8,17 @@ const readDirFTP = (sftp) => {
 
       console.log("Reading directory");
 
-      const dates = getAllCSVDates(list, configFTP.csv_name);
+      const necessaryCsvArr = [];
 
-      resolve(dates);
+      list.forEach(file => {
+        const fileName = file.filename;
+        
+        if (fileName.indexOf(configFTP.csv_name) >= 0) {
+          necessaryCsvArr.push(file.filename)
+        }
+      })
+
+      resolve(necessaryCsvArr[necessaryCsvArr.length - 1]);
     });
   });
 };
