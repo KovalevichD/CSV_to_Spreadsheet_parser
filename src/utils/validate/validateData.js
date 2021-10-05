@@ -1,13 +1,11 @@
 const { configValidateCSV } = require("../../../config");
-const checkFirstRowCSV = require("../csv/checkFirstRowCSV");
 const validateUrl = require("./validateUrl");
 
-const validateFacebook = (data) => {
+const validate = (data, rowIndex) => {
   const columnsToSave = configValidateCSV.columnsToSave;
   const columnsToBeginning = configValidateCSV.columnsAddToBeginning;
   const columnsToEnd = configValidateCSV.columnsAddToEnd;
-  const firstThreeColumnNames = Object.entries(columnsToSave).slice(0, 3);
-  const isFirstRowCSV = checkFirstRowCSV(data, firstThreeColumnNames);
+  const isFirstRowCSV = rowIndex === 0;
   const validatedData = [];
   let visibility = "published";
 
@@ -103,4 +101,4 @@ const validateFacebook = (data) => {
   return validatedData;
 };
 
-module.exports = validateFacebook;
+module.exports = validate;

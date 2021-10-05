@@ -1,29 +1,18 @@
-const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
-// const validateDataGoogle = require("../utils/validate/validateDataGoogle");
-const validateDataFacebook = require("../utils/validate/validateDataFacebook");
+const validateData = require("../utils/validate/validateData");
 const connect = require("./connectFTP");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
-const checkRowFacebook = require("../utils/validate/checkRow");
-// const checkRowGoogle = require("../utils/validate/checkRowGoogle");
+const checkRow = require("../utils/validate/checkRow");
 
 const parseSCV = (sftp, fileName) => {
   return new Promise((resolve, reject) => {
-    // const actualCSV = getLatestCSVDate(dates);
     const pathCSV = configFTP.root_directory + fileName;
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
     const parseStream = parseCsv.parse(parseCsv.NODE_STREAM_INPUT, {});
-    const data = {};
-    const setUniqueIdGoogle = new Set();
-    const setImgUrlGoogle = new Set();
-
-    // const setUniqueIdFacebook = new Set();
-    // const setHotelIdFacebook = new Set();
-    // const setImgUrlFacebook = new Set();
-    // const setImgUrlCloneFacebook = new Set();
-
-    data.googleData = [];
-    data.facebookData = [];
+    const data = [];
+    const setUniqueId = new Set();
+    const setImgUrl = new Set();
+    let counter = 0;
 
     readDataStream.pipe(parseStream);
 
@@ -32,32 +21,27 @@ const parseSCV = (sftp, fileName) => {
     readDataStream.on("end", () => {
       connect.connection.end();
     });
-
+    
     parseStream.on("data", async (chunk) => {
-      // const validatedChunkGoogle = validateDataGoogle(chunk);
-      const validatedChunkFacebook = validateDataFacebook(chunk);
-      const isNormalRowGoogle = checkRowFacebook(
-        validatedChunkFacebook,
-        setUniqueIdGoogle,
-        setImgUrlGoogle
+      const validatedChunk = validateData(chunk, counter);
+      const isNormalRow = checkRow(
+        validatedChunk,
+        setUniqueId,
+        setImgUrl
       );
-      // const isNormalRowFacebook = checkRowFacebook(
-      //   validatedChunkFacebook,
-      //   setUniqueIdFacebook,
-      //   setHotelIdFacebook,
-      //   setImgUrlFacebook,
-      //   setImgUrlCloneFacebook
-      // );
+      
+      if (isNormalRow) data.push(validatedChunk);
 
-      // if (isNormalRowGoogle) data.googleData.push(validatedChunkGoogle);
-      if (isNormalRowGoogle) data.facebookData.push(validatedChunkFacebook);
+      counter++;
     });
 
     parseStream.on("finish", () => {
       resolve(data);
+
       console.log(
-        `CSV parsing is finished! Added rows: Facebook - ${data.facebookData.length}`
+        `CSV parsing is finished! Added rows: Facebook - ${data.length}`
       );
+      console.log(`Initial amount of rows: ${counter}`);
     });
   });
 };
