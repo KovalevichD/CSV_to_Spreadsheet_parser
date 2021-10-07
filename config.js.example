@@ -11,7 +11,7 @@ module.exports = {
     client_email: "email",
     private_key: "pass",
     scopes: ["scope"],
-    spreadsheetIdGoogleAds: "id",
+    spreadsheetId: "id",
     sheetName: "sheet_name"
   },
   configValidateCSV: {
