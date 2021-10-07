@@ -4,7 +4,7 @@ const checkRowIsUniqueHotel = require("../utils/validate/checkRowOneOption");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 
-const parseSCV = (connection, sftp, fileName) => {
+const parseCSV = (connection, sftp, fileName) => {
   return new Promise((resolve, reject) => {
     const pathCSV = configFTP.root_directory + fileName;
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");

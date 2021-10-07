@@ -1,4 +1,4 @@
-const isUniqueHotel = (arrayRow, setUniqueId, setImgUrl) => {
+const checkRowIfUniqueHotel = (arrayRow, setUniqueId, setImgUrl) => {
   const uniqueId = arrayRow[0];
   const imageUrl = arrayRow[12];
   let isNormalRow = true;
@@ -16,4 +16,4 @@ const isUniqueHotel = (arrayRow, setUniqueId, setImgUrl) => {
   return isNormalRow;
 };
 
-module.exports = isUniqueHotel;
+module.exports = checkRowIfUniqueHotel;
