@@ -16,3 +16,4 @@ const parseCsv = async (req, res) => {
 
   writeDataToSheets(data, sheets, facebookSheetId, fileSheetName);
 };
+parseCsv()

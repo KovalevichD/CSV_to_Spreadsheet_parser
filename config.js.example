@@ -15,6 +15,7 @@ module.exports = {
     sheetName: "Data"
   },
   configValidateCSV: {
+    leaveValuesWithSemicolon: false,
     columnsAddToBeginning: ["hotel_id"],
     columnsAddToEnd: ["description","visibility"],
     columnsToSave: {

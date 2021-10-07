@@ -1,19 +1,17 @@
-const removeBadRows = (arrayRow, setUniqueId, setImgUrl) => {
+const { configValidateCSV } = require("../../../config");
+
+const removeBadRows = (arrayRow) => {
   const uniqueId = arrayRow[0];
-  const imageUrl = arrayRow[12];
-  const titleCell = arrayRow[2];
+  const titleCell = arrayRow[4];
   const isEmptyCell = titleCell.length === 0;
   const isSemicolonInCell = uniqueId.indexOf(";") >= 0;
-  let isNormalRow = false;
+  let isNormalRow = true;
 
-  if (isSemicolonInCell || isEmptyCell) return isNormalRow;
-
-  if (!setUniqueId.has(uniqueId)) {
-    if (!setImgUrl.has(imageUrl)) isNormalRow = true;
-    setImgUrl.add(imageUrl);
+  if (configValidateCSV.leaveValuesWithSemicolon) {
+    if (isEmptyCell) isNormalRow = false;
+  } else {
+    if (isSemicolonInCell || isEmptyCell) isNormalRow = false;
   }
-
-  setUniqueId.add(uniqueId);
 
   return isNormalRow;
 };
