@@ -1,6 +1,6 @@
 const { configValidateCSV } = require("../../../config");
 
-const checkRow = (row) => {
+const checkRowSemicolonEmptyCell = (row) => {
   const idCell = row[0];
   const titleCell = row[2];
   const isEmptyCell = titleCell.length === 0;
@@ -16,4 +16,4 @@ const checkRow = (row) => {
   return isNormalRow;
 };
 
-module.exports = checkRow;
+module.exports = checkRowSemicolonEmptyCell;

@@ -1,6 +1,6 @@
 const parseCsv = async (req, res) => {
   const { configGSH } = require("./config");
-  const googleAdsSheetId = configGSH.spreadsheetIdGoogleAds;
+  const googleAdsSheetId = configGSH.spreadsheetId;
   const connect = require("./src/ftp/connectFTP");
   const readDirFTP = require("./src/ftp/readDirFTP");
   const parseCSV = require("./src/ftp/parseCSV");

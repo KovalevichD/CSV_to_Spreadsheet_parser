@@ -1,5 +1,6 @@
-const validateDataGoogleAds = require("../utils/validate/validateDataGoogleAds");
-const checkRow = require("../utils/validate/checkRowGoogleAds");
+const validateDataGoogleAds = require("../utils/validate/validateData");
+const checkRowSemicolonEmptyCell = require("../utils/validate/checkRowSemicolonEmptyCell");
+const checkRowIsUniqueHotel = require("../utils/validate/checkRowOneOption");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 
@@ -8,6 +9,8 @@ const parseSCV = (connection, sftp, fileName) => {
     const pathCSV = configFTP.root_directory + fileName;
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
     const parseStream = parseCsv.parse(parseCsv.NODE_STREAM_INPUT, {});
+    const setUniqueIdOneOption = new Set();
+    const setImgUrlOneOption = new Set();
     const data = {};
 
     let counter = 0;
@@ -24,9 +27,10 @@ const parseSCV = (connection, sftp, fileName) => {
 
     parseStream.on("data", async (chunk) => {
       const validatedChunkGoogleAds = validateDataGoogleAds(chunk, counter);
-      const isNormalRow = checkRow(validatedChunkGoogleAds);
+      const isRowWithoutSemicolonEmptyCell = checkRowSemicolonEmptyCell(validatedChunkGoogleAds);
+      const isUniqueHotel = checkRowIsUniqueHotel(validatedChunkGoogleAds, setUniqueIdOneOption, setImgUrlOneOption);
 
-      if (isNormalRow) data.googleAdsData.push(validatedChunkGoogleAds);
+      if (isRowWithoutSemicolonEmptyCell && isUniqueHotel) data.googleAdsData.push(validatedChunkGoogleAds);
 
       counter++;
     });
