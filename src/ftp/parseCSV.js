@@ -1,6 +1,6 @@
 const validateDataGoogleAds = require("../utils/validate/validateData");
 const checkRowSemicolonEmptyCell = require("../utils/validate/checkRowSemicolonEmptyCell");
-const checkRowIsUniqueHotel = require("../utils/validate/checkRowOneOption");
+const checkRowIsUniqueHotel = require("../utils/validate/checkRowOneOriginOption");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 
@@ -28,7 +28,7 @@ const parseCSV = (connection, sftp, fileName) => {
     parseStream.on("data", async (chunk) => {
       const validatedChunkGoogleAds = validateDataGoogleAds(chunk, counter);
       const isRowWithoutSemicolonEmptyCell = checkRowSemicolonEmptyCell(validatedChunkGoogleAds);
-      const isUniqueHotel = checkRowIsUniqueHotel(validatedChunkGoogleAds, setUniqueIdOneOption, setImgUrlOneOption);
+      const isUniqueHotel = checkRowIsUniqueHotel(validatedChunkGoogleAds, setUniqueIdOneOption, setImgUrlOneOption, counter);
 
       if (isRowWithoutSemicolonEmptyCell && isUniqueHotel) data.googleAdsData.push(validatedChunkGoogleAds);
 
@@ -46,4 +46,4 @@ const parseCSV = (connection, sftp, fileName) => {
   });
 };
 
-module.exports = parseSCV;
+module.exports = parseCSV;

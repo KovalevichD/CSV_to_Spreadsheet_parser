@@ -1,7 +1,10 @@
-const checkRowIfUniqueHotel = (arrayRow, setUniqueId, setImgUrl) => {
+const checkRowIfUniqueHotel = (arrayRow, setUniqueId, setImgUrl, index) => {
+  let isNormalRow = true;
+
+  if (index === 0) return isNormalRow;
+
   const uniqueId = arrayRow[0];
   const imageUrl = arrayRow[12];
-  let isNormalRow = true;
 
   if (setUniqueId.has(uniqueId)) {
     isNormalRow = false;
