@@ -21,6 +21,7 @@ module.exports = {
     columnsToSaveGoogleAds: {
       "origin": 0,
       "name": 3,
+      "package_price": 15,
       "thumbnail_image_url": 20,
       "url": 21,
       "PackageTypeCode": 25

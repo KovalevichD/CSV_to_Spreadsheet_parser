@@ -50,7 +50,11 @@ const validateData = (data, rowIndex) => {
       const imageUrl = data[columnsToSave["thumbnail_image_url"]];
       const validatedExitUrl = validateUrl(exitUrl);
       const validatedImageUrl = validateUrl(imageUrl);
+      let basePrice = data[columnsToSave["package_price"]];
+      const validatedBasePrice = basePrice.split("$")[1] + " USD";
 
+      if (prop === "package_price") data[columnToSave] = validatedBasePrice;
+      
       if (validatedExitUrl && validatedImageUrl)
         validatedData.push(data[columnToSave]);
     }

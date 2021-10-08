@@ -10,8 +10,8 @@ const parseCsv = async (req, res) => {
   const connect = await connectToFTP();
   const connection = connect.connection;
   const sftp = connect.sftp;
-  const datesOfFiles = await readDirFTP(sftp);
-  const data = await parseCSV(connection, sftp, datesOfFiles);
+  const fileCSV = await readDirFTP(sftp);
+  const data = await parseCSV(connection, sftp, fileCSV);
   const sheets = await connectSheets();
 
   writeDataToSheets(data.googleAdsData, sheets, googleAdsSheetId, 'GoogleAds');
