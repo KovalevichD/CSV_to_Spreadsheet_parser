@@ -21,13 +21,10 @@ const connectToFTP = () => {
       connection.sftp((err, sftp) => {
         if (err) throw err;
 
-        resolve(sftp);
+        resolve({sftp, connection});
       });
     });
   });
 };
 
-module.exports = {
-  connectToFTP,
-  connection,
-};
+module.exports = connectToFTP;

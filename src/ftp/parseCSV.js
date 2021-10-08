@@ -1,5 +1,5 @@
-const validateDataGoogleAds = require("../utils/validate/validateDataGoogleAds");
-const checkRow = require("../utils/validate/checkRowGoogleAds");
+const validateData = require("../utils/validate/validateData");
+const checkRow = require("../utils/validate/checkRow");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 
@@ -23,7 +23,7 @@ const parseSCV = (connection, sftp, fileName) => {
     });
 
     parseStream.on("data", async (chunk) => {
-      const validatedChunkGoogleAds = validateDataGoogleAds(chunk, counter);
+      const validatedChunkGoogleAds = validateData(chunk, counter);
       const isNormalRow = checkRow(validatedChunkGoogleAds);
 
       if (isNormalRow) data.googleAdsData.push(validatedChunkGoogleAds);

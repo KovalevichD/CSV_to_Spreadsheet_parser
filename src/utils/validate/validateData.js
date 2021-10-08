@@ -9,7 +9,7 @@ const validateData = (data, rowIndex) => {
   const columnsToEnd = configValidateCSV.columnsAddToEndGoogleAds;
   const isFirstRowCSV = rowIndex === 0;
   const validatedData = [];
-  
+
   if (isFirstRowCSV) {
     validatedData.push(...columnsToBeginning);
   } else {
@@ -33,6 +33,9 @@ const validateData = (data, rowIndex) => {
         case "name":
           data[columnToSave] = "Title";
           break;
+        case "package_price":
+          data[columnToSave] = "Price";
+          break;
         case "thumbnail_image_url":
           data[columnToSave] = "Image URL";
           break;
@@ -50,6 +53,10 @@ const validateData = (data, rowIndex) => {
       const imageUrl = data[columnsToSave["thumbnail_image_url"]];
       const validatedExitUrl = validateUrl(exitUrl);
       const validatedImageUrl = validateUrl(imageUrl);
+      let basePrice = data[columnsToSave["base_price"]];
+      const validatedBasePrice = basePrice.split("$")[1] + " USD";
+
+      if (prop === "base_price") data[columnToSave] = validatedBasePrice;
 
       if (validatedExitUrl && validatedImageUrl)
         validatedData.push(data[columnToSave]);
