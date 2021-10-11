@@ -1,19 +1,18 @@
-const checkRowIfUniqueHotel = (arrayRow, setUniqueId, setImgUrl) => {
-  const uniqueId = arrayRow[0];
-  const imageUrl = arrayRow[12];
+const checkRowIfUniqueHotelAndOrigin = (arrayRow, setHotelAndOrigin, index) => {
   let isNormalRow = true;
 
-  if (setUniqueId.has(uniqueId)) {
-    isNormalRow = false;
+  if (index === 0) return isNormalRow;
 
-    if (setImgUrl.has(imageUrl)) isNormalRow = false;
+  const uniqueId = arrayRow[0];
+  const uniqueIdArray = uniqueId.split("_");
+  const uniqueHotelAndOrigin = uniqueIdArray[1] + uniqueIdArray[2]
 
-    setImgUrl.add(imageUrl);
-  }
+  if (setHotelAndOrigin.has(uniqueHotelAndOrigin)) isNormalRow = false;
 
-  setUniqueId.add(uniqueId);
+  setHotelAndOrigin.add(uniqueHotelAndOrigin);
 
   return isNormalRow;
 };
 
-module.exports = checkRowIfUniqueHotel;
+module.exports = checkRowIfUniqueHotelAndOrigin;
+

@@ -15,7 +15,8 @@ const validateData = (data, rowIndex) => {
   } else {
     const firstFrag = data[columnsForTakingDataGoogleAds["destination"]];
     const secondFrag = data[columnsForTakingDataGoogleAds["hotel_id"]];
-    const uniqIdString = `${firstFrag}_${secondFrag}`;
+    const thirdFrag = data[columnsToSave["origin"]];
+    const uniqIdString = `${firstFrag}_${secondFrag}_${thirdFrag}`;
 
     validatedData.push(uniqIdString);
   }
