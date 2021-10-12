@@ -1,7 +1,7 @@
 const { configValidateCSV } = require("../../../config");
 const validateUrl = require("./validateUrl");
 
-const validateFacebook = (data, rowIndex) => {
+const validateData = (data, rowIndex) => {
   const columnsToSave = configValidateCSV.columnsToSaveFacebook;
   const columnsToBeginning = configValidateCSV.columnsAddToBeginningFacebook;
   const columnsToEnd = configValidateCSV.columnsAddToEndFacebook;
@@ -101,4 +101,4 @@ const validateFacebook = (data, rowIndex) => {
   return validatedData;
 };
 
-module.exports = validateFacebook;
+module.exports = validateData;

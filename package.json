@@ -4,7 +4,7 @@
   "description": "cloud function for parsing CSV and transfer the data to Google Spread Sheets",
   "main": "app.js",
   "scripts": {
-    "start": "npx functions-framework --target=parseCsv [--signature-type=event]",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dmitry Kovalevich",
@@ -17,7 +17,6 @@
     "ssh2": "^1.2.0"
   },
   "devDependencies": {
-    "@google-cloud/functions-framework": "^1.9.0",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
   }

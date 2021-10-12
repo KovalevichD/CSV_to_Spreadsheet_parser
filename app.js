@@ -1,14 +1,18 @@
 const parseCsv = async (req, res) => {
   const { configGSH } = require("./config");
-  const connect = require("./src/ftp/connectFTP");
+  const connectToFTP = require("./src/ftp/connectFTP");
   const readDirFTP = require("./src/ftp/readDirFTP");
   const parseCSV = require("./src/ftp/parseCSV");
   const connectSheets = require("./src/sheets/connectSheets");
   const writeDataToSheets = require("./src/sheets/writeData");
-  const connectionFTP = await connect.connectToFTP();
-  const datesOfFiles = await readDirFTP(connectionFTP);
-  const data = await parseCSV(connectionFTP, datesOfFiles);
+
+  const connectionFTP = await connectToFTP();
+  const connection = connectionFTP.connection;
+  const sftp = connectionFTP.sftp;
+  const file = await readDirFTP(sftp);
+  const data = await parseCSV(connection, sftp, file);
   const sheets = await connectSheets();
+
   const settingsAllOptionsFeed = {
     data: data.facebookDataAllOptions, 
     sheetsConnection: sheets,
@@ -27,3 +31,5 @@ const parseCsv = async (req, res) => {
   writeDataToSheets(settingsAllOptionsFeed);
   writeDataToSheets(settingsOneOptionFeed);
 };
+
+parseCsv()

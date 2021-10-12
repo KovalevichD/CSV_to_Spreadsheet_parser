@@ -1,15 +1,12 @@
-const getLatestCSVDate = require("../utils/csv/getLatestCSVDate");
-const validateDataFacebook = require("../utils/validate/validateDataAllOptions");
-const connect = require("./connectFTP");
+const validateData = require("../utils/validate/validateData");
 const { configFTP } = require("../../config");
 const parseCsv = require("papaparse");
 const checkRowAllOptions = require("../utils/validate/checkRowAllOptions");
 const checkRowOneOption = require("../utils/validate/checkRowOneOption");
 
-const parseSCV = (sftp, dates) => {
+const parseSCV = (connection, sftp, fileName) => {
   return new Promise((resolve, reject) => {
-    const actualCSV = getLatestCSVDate(dates);
-    const pathCSV = configFTP.root_directory + configFTP.csv_name + actualCSV;
+    const pathCSV = configFTP.root_directory + fileName;
     const readDataStream = sftp.createReadStream(pathCSV, "utf-8");
     const parseStream = parseCsv.parse(parseCsv.NODE_STREAM_INPUT, {});
     const data = {};
@@ -31,11 +28,11 @@ const parseSCV = (sftp, dates) => {
     console.log("CSV parsing...");
 
     readDataStream.on("end", () => {
-      connect.connection.end();
+      connection.end();
     });
 
     parseStream.on("data", async (chunk) => {
-      const validatedChunkFacebook = validateDataFacebook(chunk, counter);
+      const validatedChunkFacebook = validateData(chunk, counter);
       const isNormalRowOneOption = checkRowOneOption(
         validatedChunkFacebook,
         setUniqueIdOneOption,
